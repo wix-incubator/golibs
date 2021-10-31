@@ -77,13 +77,15 @@ func (hook *JsonLogHook) Levels() []logrus.Level {
 	return hook.levels
 }
 
+//HOSTNAME: process.env.HOSTNAME,
+//dc: process.env.DC_NAME,
+//artifact_version: process.env.APP_VERSION,
+//artifact_id: process.env.APP_NAME,
+//log_level: "info",
+//message: message,
+//data: data,
+
 func newLogEntry(logger *logrus.Logger, logProperties *LogProperties) *logrus.Entry {
 	return logrus.
-		NewEntry(logger).
-		WithField("dc", logProperties.DcName).
-		WithField("service", logProperties.ServiceName).
-		WithField("app_name", logProperties.AppName).
-		WithField("pod_name", logProperties.PodName).
-		WithField("instance", logProperties.InstanceName)
-
+		NewEntry(logger)
 }

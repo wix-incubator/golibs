@@ -35,20 +35,16 @@ func Test_JsonLogFireProperties(t *testing.T) {
 	expect := assert.New(t)
 
 	var expectedProperties = &LogProperties{
-		DcName:       randomStr(),
-		AppName:      randomStr(),
-		PodName:      randomStr(),
-		ServiceName:  randomStr(),
-		InstanceName: randomStr(),
+		DcName:  randomStr(),
+		AppName: randomStr(),
+		PodName: randomStr(),
 	}
 
 	jsonMap := fireAndInterceptAsMapWith(expectedProperties)
 
 	expect.Equal(expectedProperties.DcName, jsonMap[expectedFieldNameDc])
-	expect.Equal(expectedProperties.ServiceName, jsonMap[expectedFieldNameServiceName])
 	expect.Equal(expectedProperties.AppName, jsonMap[expectedFieldNameAppName])
 	expect.Equal(expectedProperties.PodName, jsonMap[expectedFieldNamePodName])
-	expect.Equal(expectedProperties.InstanceName, jsonMap[expectedFieldNameInstance])
 }
 
 func Test_JsonLogFirePartialProperties(t *testing.T) {
@@ -61,7 +57,6 @@ func Test_JsonLogFirePartialProperties(t *testing.T) {
 
 	jsonMap := fireAndInterceptAsMapWith(expectedProperties)
 
-	expect.Equal(expectedProperties.DcName, jsonMap[expectedFieldNameDc])
 	expect.Equal(expectedProperties.AppName, jsonMap[expectedFieldNameAppName])
 	expect.Empty(jsonMap[expectedFieldNameServiceName])
 	expect.Empty(jsonMap[expectedFieldNamePodName])

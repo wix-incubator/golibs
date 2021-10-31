@@ -14,11 +14,11 @@ type Config struct {
 }
 
 type LogProperties struct {
-	DcName       string
-	AppName      string
-	PodName      string
-	ServiceName  string
-	InstanceName string
+	DcName         string
+	AppName        string
+	PodName        string
+	ArifactName    string
+	ArifactVersion string
 }
 
 var loggerEntry *logrus.Entry
@@ -57,9 +57,7 @@ func configureLogger(config Config) {
 		panic(err)
 	}
 	logger.SetLevel(logLevel)
-	/*if config.FileName == "" {
-		config.FileName = "/dev/logs/kube_watcher.json"
-	}*/
+
 	if config.FileName != "" {
 		logFileName := config.FileName
 		fileHook := NewJsonLogFileHook(logFileName, logLevel, config.Properties)
