@@ -6,8 +6,8 @@ import (
 	"testing"
 )
 
-const expectedTimestampFieldName = "@timestamp"
-const expectedMessageFieldName = "message"
+const expectedTimestampFieldName = "timestamp"
+const expectedMessageFieldName = "data"
 
 func TestLogFieldNames(t *testing.T) {
 	expect := assert.New(t)

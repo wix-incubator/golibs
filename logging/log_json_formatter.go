@@ -15,8 +15,8 @@ func NewLogJsonFormatter() *LogJsonFormatter {
 		&logrus.JSONFormatter{
 			TimestampFormat: TimestampFormat,
 			FieldMap: logrus.FieldMap{
-				logrus.FieldKeyTime: "@timestamp",
-				logrus.FieldKeyMsg:  "message",
+				logrus.FieldKeyTime: "timestamp",
+				logrus.FieldKeyMsg:  "data",
 			},
 		}}
 }
