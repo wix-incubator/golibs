@@ -11,44 +11,34 @@ import (
 	"testing"
 )
 
-const expectedFieldNameDc = "dc"
-const expectedFieldNameServiceName = "service"
-const expectedFieldNameAppName = "app_name"
-const expectedFieldNamePodName = "pod_name"
-const expectedFieldNameInstance = "instance"
-
 func Test_NewJsonLogFileHook(t *testing.T) {
 	logFileName := path.Join(os.TempDir(), randomStr()+"-file.log")
 	defer os.Remove(logFileName)
 
-	obj := NewJsonLogFileHook(logFileName, logrus.TraceLevel, LogProperties{})
+	obj := NewJsonLogFileHook(logFileName, logrus.TraceLevel)
 
 	testNewJsonLogHook(obj, t)
 }
 
 func Test_NewJsonLogHook(t *testing.T) {
-	obj := NewJsonLogHook(logrus.TraceLevel, LogProperties{}, new(bytes.Buffer))
+	obj := NewJsonLogHook(logrus.TraceLevel,  new(bytes.Buffer))
 	testNewJsonLogHook(obj, t)
 }
 
 func Test_JsonLogFireProperties(t *testing.T) {
 	expect := assert.New(t)
 
-	var expectedProperties = &LogProperties{
-		DcName:  randomStr(),
-		AppName: randomStr(),
-		PodName: randomStr(),
-	}
-
-	jsonMap := fireAndInterceptAsMapWith(expectedProperties)
+	jsonMap := fireAndInterceptAsMapWith()
 	expect.NotNil(jsonMap)
+	expect.NotNil(jsonMap["data"])
+	expect.NotNil(jsonMap["timestamop"])
 }
 
-func fireAndInterceptAsMapWith(expectedProperties *LogProperties) map[string]string {
+func fireAndInterceptAsMapWith() map[string]string {
 	buffer := new(bytes.Buffer)
-	obj := NewJsonLogHook(logrus.TraceLevel, *expectedProperties, buffer)
+	obj := NewJsonLogHook(logrus.TraceLevel, buffer)
 
-	entry := newLogEntry(logrus.New(), expectedProperties)
+	entry := newLogEntry(logrus.New())
 	entry.Level = logrus.TraceLevel
 	obj.Fire(entry)
 

@@ -7,9 +7,9 @@ import (
 )
 
 const expectedTimestampFieldName = "timestamp"
-const expectedMessageFieldName = "data"
+const expectedMessageFieldName = "message"
 
-func TestLogFieldNames(t *testing.T) {
+func Test_LogFieldNames(t *testing.T) {
 	expect := assert.New(t)
 	formatter := NewLogJsonFormatter()
 
