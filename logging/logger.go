@@ -9,13 +9,22 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+type LoggerFields struct{
+	ArtifactID 		string
+	ArtifactVersion string
+	Hostname  		string	
+	Dc				string
+}
+
 type Config struct {
 	AppName        	string	
 	LogsFolder		string
 	LogToJsonFile	bool
 	Level      string
 	Colors     bool	
+	AdditionalFields LoggerFields
 }
+
 
 
 var loggerEntry *logrus.Entry
@@ -57,7 +66,7 @@ func configureLogger(config Config) {
 	if config.LogToJsonFile  {
 		shortLogFileName := fmt.Sprintf("%s_logstash_json.log",config.AppName )
 		logFileName := path.Join(config.LogsFolder,shortLogFileName)	
-		fileHook := NewJsonLogFileHook(logFileName, logLevel)
+		fileHook := NewJsonLogFileHook(logFileName, config.AdditionalFields, logLevel)
 		logger.Hooks.Add(fileHook)
 	}
 

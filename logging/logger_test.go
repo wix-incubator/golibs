@@ -35,6 +35,12 @@ func Test_LevelConfig(t *testing.T) {
 	SetLogConfig(Config{
 		Level:      "debug",
 		Colors:     false,
+		AdditionalFields: LoggerFields{
+			Dc: "42",
+			ArtifactID: "com.wixpress.artifact",
+			ArtifactVersion: "1.0.1",
+			Hostname: "pod-1",
+		},
 	})
 
 	entry := GetLog("test")
@@ -55,7 +61,12 @@ func Test_LogFileCreation(t *testing.T) {
 		AppName: "test-app",
 		Level:      "debug",
 		Colors:     false,
-	
+		AdditionalFields: LoggerFields{
+			Dc: "42",
+			ArtifactID: "com.wixpress.artifact",
+			ArtifactVersion: "1.0.1",
+			Hostname: "pod-1",
+		},
 	})
 
 	logEntry := GetLog("test")
@@ -78,6 +89,12 @@ func Test_LogDataConversion(t *testing.T) {
 		AppName: "test-app",
 		Level:      "debug",
 		Colors:     false,	
+		AdditionalFields: LoggerFields{
+			Dc: "42",
+			ArtifactID: "com.wixpress.artifact",
+			ArtifactVersion: "1.0.1",
+			Hostname: "pod-1",
+		},
 	})
 
 	logEntry := GetLog("test")

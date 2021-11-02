@@ -8,12 +8,21 @@ import (
 	"encoding/json"
 )
 
+type LogFieldNames string
+
+const (
+	ArtifactIDField         LogFieldNames 	= "artifact_id"
+	ArtifactVersionField                    = "artifact_version"
+	DCField                       			= "dc"
+	HostnameField                       	= "HOSTNAME"
+)
+
 type JsonLogHook struct {
 	levels       []logrus.Level
 	fileLogEntry *logrus.Entry
 }
 
-func NewJsonLogFileHook(fileName string, levelToSet logrus.Level) (retVal *JsonLogHook) {
+func NewJsonLogFileHook(fileName string, fields LoggerFields, levelToSet logrus.Level) (retVal *JsonLogHook) {
 	fileLG := &lumberjack.Logger{
 		Filename:   fileName,
 		MaxSize:    100,
@@ -22,16 +31,16 @@ func NewJsonLogFileHook(fileName string, levelToSet logrus.Level) (retVal *JsonL
 		Compress:   true,
 	}
 
-	return NewJsonLogHook(levelToSet, fileLG)
+	return NewJsonLogHook(levelToSet, fields, fileLG)
 }
 
-func NewJsonLogHook(levelToSet logrus.Level, writer io.Writer) (retVal *JsonLogHook) {
+func NewJsonLogHook(levelToSet logrus.Level, fields LoggerFields ,writer io.Writer) (retVal *JsonLogHook) {
 	logrusLogger := logrus.New()
 	logrusLogger.Level = levelToSet
 	logrusLogger.Out = writer
 	logrusLogger.Formatter = NewLogJsonFormatter()
 
-	newFileLogEntry := newLogEntry(logrusLogger)
+	newFileLogEntry := newLogEntry(logrusLogger,  fields)
 
 	levels := make([]logrus.Level, 0)
 	for _, nextLevel := range logrus.AllLevels {
@@ -61,7 +70,14 @@ func (hook *JsonLogHook) Fire(entry *logrus.Entry) error {
 	dataField := makeDataField(entry.Data)
 	
 	//entryTolog := hook.fileLogEntry.WithFields(entry.Data)
+	// entryTolog := hook.fileLogEntry.
+	// 	WithField(string(DCField),entry.Data[string(DCField)]).
+	// 	WithField(string(ArtifactIDField),entry.Data[string(ArtifactIDField)]).
+	// 	WithField(string(ArtifactVersionField),entry.Data[string(ArtifactVersionField)]).
+	// 	WithField(string(HostnameField),entry.Data[string(HostnameField)]).
+	// 	WithField("data", dataField)
 	entryTolog := hook.fileLogEntry.WithField("data", dataField)
+			
 	switch entry.Level {
 	case logrus.DebugLevel:
 		funcToCallForPrint = entryTolog.Debug
@@ -87,7 +103,11 @@ func (hook *JsonLogHook) Levels() []logrus.Level {
 	return hook.levels
 }
 
-func newLogEntry(logger *logrus.Logger) *logrus.Entry {
+func newLogEntry(logger *logrus.Logger, fields LoggerFields) *logrus.Entry {
 	return logrus.
-		NewEntry(logger)
+		NewEntry(logger).
+		WithField(string(DCField), fields.Dc).
+		WithField(string(ArtifactIDField), fields.ArtifactID).
+		WithField(string(ArtifactVersionField), fields.ArtifactVersion).
+		WithField(string(HostnameField), fields.Hostname)
 }
