@@ -9,23 +9,21 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type LoggerFields struct{
-	ArtifactID 		string
+type LoggerFields struct {
+	ArtifactID      string
 	ArtifactVersion string
-	Hostname  		string	
-	Dc				string
+	Hostname        string
+	Dc              string
 }
 
 type Config struct {
-	AppName        	string	
-	LogsFolder		string
-	LogToJsonFile	bool
-	Level      string
-	Colors     bool	
+	AppName          string
+	LogsFolder       string
+	LogToJsonFile    bool
+	Level            string
+	Colors           bool
 	AdditionalFields LoggerFields
 }
-
-
 
 var loggerEntry *logrus.Entry
 var colorSupport aurora.Aurora
@@ -45,8 +43,8 @@ func GetLog(obj string) (retVal *logrus.Entry) {
 
 func init() {
 	configureLogger(Config{
-		Level:      "debug",
-		Colors:     false,		
+		Level:  "debug",
+		Colors: false,
 	})
 }
 
@@ -62,10 +60,10 @@ func configureLogger(config Config) {
 		panic(err)
 	}
 	logger.SetLevel(logLevel)
-	
-	if config.LogToJsonFile  {
-		shortLogFileName := fmt.Sprintf("%s_logstash_json.log",config.AppName )
-		logFileName := path.Join(config.LogsFolder,shortLogFileName)	
+
+	if config.LogToJsonFile {
+		shortLogFileName := fmt.Sprintf("%s_logstash_json.log", config.AppName)
+		logFileName := path.Join(config.LogsFolder, shortLogFileName)
 		fileHook := NewJsonLogFileHook(logFileName, config.AdditionalFields, logLevel)
 		logger.Hooks.Add(fileHook)
 	}

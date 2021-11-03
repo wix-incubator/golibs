@@ -1,4 +1,4 @@
-module github.com/wix-private/golibs
+module github.com/wix/golibs
 
 go 1.13
 

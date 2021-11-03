@@ -16,13 +16,13 @@ import (
 const appName = "test-app"
 const logFolder = "."
 
-func loadLogFile(fileName string)(retVal []map[string]interface{}){
+func loadLogFile(fileName string) (retVal []map[string]interface{}) {
 	bytesRead, _ := ioutil.ReadFile(fileName)
-    file_content := string(bytesRead)
-    lines := strings.Split(strings.Trim(file_content," \n"), "\n")
+	file_content := string(bytesRead)
+	lines := strings.Split(strings.Trim(file_content, " \n"), "\n")
 
 	retVal = make([]map[string]interface{}, len(lines))
-	for i, line := range(lines){
+	for i, line := range lines {
 		var result map[string]interface{}
 
 		// Unmarshal or Decode the JSON to the interface.
@@ -33,13 +33,13 @@ func loadLogFile(fileName string)(retVal []map[string]interface{}){
 }
 func Test_LevelConfig(t *testing.T) {
 	SetLogConfig(Config{
-		Level:      "debug",
-		Colors:     false,
+		Level:  "debug",
+		Colors: false,
 		AdditionalFields: LoggerFields{
-			Dc: "42",
-			ArtifactID: "com.wixpress.artifact",
+			Dc:              "42",
+			ArtifactID:      "com.wixpress.artifact",
 			ArtifactVersion: "1.0.1",
-			Hostname: "pod-1",
+			Hostname:        "pod-1",
 		},
 	})
 
@@ -56,16 +56,16 @@ func Test_LogFileCreation(t *testing.T) {
 	}()
 
 	SetLogConfig(Config{
-		LogsFolder: ".",
+		LogsFolder:    ".",
 		LogToJsonFile: true,
-		AppName: "test-app",
-		Level:      "debug",
-		Colors:     false,
+		AppName:       "test-app",
+		Level:         "debug",
+		Colors:        false,
 		AdditionalFields: LoggerFields{
-			Dc: "42",
-			ArtifactID: "com.wixpress.artifact",
+			Dc:              "42",
+			ArtifactID:      "com.wixpress.artifact",
 			ArtifactVersion: "1.0.1",
-			Hostname: "pod-1",
+			Hostname:        "pod-1",
 		},
 	})
 
@@ -84,16 +84,16 @@ func Test_LogDataConversion(t *testing.T) {
 	}()
 
 	SetLogConfig(Config{
-		LogsFolder: ".",
+		LogsFolder:    ".",
 		LogToJsonFile: true,
-		AppName: "test-app",
-		Level:      "debug",
-		Colors:     false,	
+		AppName:       "test-app",
+		Level:         "debug",
+		Colors:        false,
 		AdditionalFields: LoggerFields{
-			Dc: "42",
-			ArtifactID: "com.wixpress.artifact",
+			Dc:              "42",
+			ArtifactID:      "com.wixpress.artifact",
 			ArtifactVersion: "1.0.1",
-			Hostname: "pod-1",
+			Hostname:        "pod-1",
 		},
 	})
 
@@ -104,6 +104,6 @@ func Test_LogDataConversion(t *testing.T) {
 	assert.Len(t, entries, 2)
 	dataEntry := entries[1]["data"]
 	datas := make(map[string]string)
-	json.Unmarshal([]byte(dataEntry.(string)),&datas)
+	json.Unmarshal([]byte(dataEntry.(string)), &datas)
 	assert.Equal(t, datas["action"], "someaction")
 }
