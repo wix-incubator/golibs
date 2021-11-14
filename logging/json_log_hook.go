@@ -1,11 +1,9 @@
 package logging
 
 import (
-	"io"
-
-	"encoding/json"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/natefinch/lumberjack.v2"
+	"io"
 )
 
 type LogFieldNames string
@@ -57,26 +55,12 @@ func NewJsonLogHook(levelToSet logrus.Level, fields LoggerFields, writer io.Writ
 	return retVal
 }
 
-func makeDataField(data logrus.Fields) (retVal string) {
-	asBytes, _ := json.Marshal(data)
-	retVal = string(asBytes)
-	return retVal
-}
-
 // Fire is required to implement Logrus hook
 func (hook *JsonLogHook) Fire(entry *logrus.Entry) error {
 	type printMethod func(args ...interface{})
 	var funcToCallForPrint printMethod
-	dataField := makeDataField(entry.Data)
 
-	//entryTolog := hook.fileLogEntry.WithFields(entry.Data)
-	// entryTolog := hook.fileLogEntry.
-	// 	WithField(string(DCField),entry.Data[string(DCField)]).
-	// 	WithField(string(ArtifactIDField),entry.Data[string(ArtifactIDField)]).
-	// 	WithField(string(ArtifactVersionField),entry.Data[string(ArtifactVersionField)]).
-	// 	WithField(string(HostnameField),entry.Data[string(HostnameField)]).
-	// 	WithField("data", dataField)
-	entryTolog := hook.fileLogEntry.WithField("data", dataField)
+	entryTolog := hook.fileLogEntry.WithField("data", entry.Data)
 
 	switch entry.Level {
 	case logrus.DebugLevel:

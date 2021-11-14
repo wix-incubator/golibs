@@ -102,8 +102,6 @@ func Test_LogDataConversion(t *testing.T) {
 	entries := loadLogFile(expectedFileName)
 	assert.NotEmpty(t, entries)
 	assert.Len(t, entries, 2)
-	dataEntry := entries[1]["data"]
-	datas := make(map[string]string)
-	json.Unmarshal([]byte(dataEntry.(string)), &datas)
-	assert.Equal(t, datas["action"], "someaction")
+	dataEntry := entries[1]["data"].(map[string]interface{})
+	assert.Equal(t, dataEntry["action"].(string), "someaction")
 }
