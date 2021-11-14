@@ -88,8 +88,10 @@ func checkFileExist(filePath string)(retval bool){
 }
 
 func Test_LogDataConversion(t *testing.T) {
-	expectedFileName := path.Join(logFolder, fmt.Sprintf("%s_logstash_json.log", appName))
-	os.Remove(expectedFileName)
+	appName := "Test_LogDataConversion"
+	expectedFileName := path.Join(logFolder, fmt.Sprintf("%s_logstash_json.log",appName ))
+	res := os.Remove(expectedFileName)
+	assert.Nil(t, res)
 	assert.False(t, checkFileExist(expectedFileName))
 
 	defer func() {
@@ -99,7 +101,7 @@ func Test_LogDataConversion(t *testing.T) {
 	SetLogConfig(Config{
 		LogsFolder:    ".",
 		LogToJsonFile: true,
-		AppName:       "test-app",
+		AppName:       appName,
 		Level:         "debug",
 		Colors:        false,
 		AdditionalFields: LoggerFields{
