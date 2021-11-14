@@ -23,7 +23,7 @@ type JsonLogHook struct {
 func NewJsonLogFileHook(fileName string, fields LoggerFields, levelToSet logrus.Level) (retVal *JsonLogHook) {
 	fileLG := &lumberjack.Logger{
 		Filename:   fileName,
-		MaxSize:    100,
+		MaxSize:    1000,
 		MaxBackups: 1,
 		MaxAge:     30,
 		Compress:   true,

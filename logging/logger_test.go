@@ -51,6 +51,9 @@ func Test_LevelConfig(t *testing.T) {
 func Test_LogFileCreation(t *testing.T) {
 	expectedFileName := path.Join(logFolder, fmt.Sprintf("%s_logstash_json.log", appName))
 	os.Remove(expectedFileName)
+	if checkFileExist(expectedFileName) {
+		print("File exist")
+	}
 	defer func() {
 		os.Remove(expectedFileName)
 	}()
@@ -76,9 +79,23 @@ func Test_LogFileCreation(t *testing.T) {
 	assert.Len(t, etnries, 2)
 }
 
+func checkFileExist(filePath string)(retval bool){
+	if _, err := os.Stat(filePath); err == nil {
+		retval = true
+	  
+	  } else {
+		retval = false
+	  }
+	return retval
+}
+
 func Test_LogDataConversion(t *testing.T) {
 	expectedFileName := path.Join(logFolder, fmt.Sprintf("%s_logstash_json.log", appName))
 	os.Remove(expectedFileName)
+	if checkFileExist(expectedFileName) {
+		print("File exist")
+	}
+
 	defer func() {
 		os.Remove(expectedFileName)
 	}()
