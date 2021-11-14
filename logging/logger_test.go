@@ -90,8 +90,7 @@ func checkFileExist(filePath string)(retval bool){
 func Test_LogDataConversion(t *testing.T) {
 	appName := "Test_LogDataConversion"
 	expectedFileName := path.Join(logFolder, fmt.Sprintf("%s_logstash_json.log",appName ))
-	res := os.Remove(expectedFileName)
-	assert.Nil(t, res)
+	os.Remove(expectedFileName)
 	assert.False(t, checkFileExist(expectedFileName))
 
 	defer func() {
