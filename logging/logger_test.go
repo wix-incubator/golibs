@@ -77,19 +77,19 @@ func Test_LogFileCreation(t *testing.T) {
 	assert.Len(t, etnries, 2)
 }
 
-func checkFileExist(filePath string)(retval bool){
+func checkFileExist(filePath string) (retval bool) {
 	if _, err := os.Stat(filePath); err == nil {
 		retval = true
-	  
-	  } else {
+
+	} else {
 		retval = false
-	  }
+	}
 	return retval
 }
 
 func Test_LogDataConversion(t *testing.T) {
 	appName := "Test_LogDataConversion"
-	expectedFileName := path.Join(logFolder, fmt.Sprintf("%s_logstash_json.log",appName ))
+	expectedFileName := path.Join(logFolder, fmt.Sprintf("%s_logstash_json.log", appName))
 	os.Remove(expectedFileName)
 	assert.False(t, checkFileExist(expectedFileName))
 

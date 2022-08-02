@@ -11,7 +11,7 @@ type LogFieldNames string
 const (
 	ArtifactIDField      LogFieldNames = "artifact_id"
 	ArtifactVersionField               = "artifact_version"
-	ArtifactBranchField               = "artifact_branch"
+	ArtifactBranchField                = "artifact_branch"
 	DCField                            = "dc"
 	HostnameField                      = "HOSTNAME"
 )
@@ -33,7 +33,7 @@ func NewJsonLogFileHook(fileName string, fields LoggerFields, levelToSet logrus.
 	return NewJsonLogHook(levelToSet, fields, fileLG)
 }
 
-func NewJsonLogFileHookWithLogLimits(fileName string, fields LoggerFields, levelToSet logrus.Level, maxSizeMB int, maxBackups int ) (retVal *JsonLogHook) {
+func NewJsonLogFileHookWithLogLimits(fileName string, fields LoggerFields, levelToSet logrus.Level, maxSizeMB int, maxBackups int) (retVal *JsonLogHook) {
 	fileLG := &lumberjack.Logger{
 		Filename:   fileName,
 		MaxSize:    maxSizeMB,

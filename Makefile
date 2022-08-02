@@ -1,13 +1,14 @@
 prepare:
+	CGO_ENABLED=0 go mod download
 
 format:
-	gofmt -s -w .
+	CGO_ENABLED=0 gofmt -s -w .
 
 lint:
-	gofmt -d .
+	CGO_ENABLED=0 gofmt -d .
 
 test:
-	go test $(MAYBE_VERBOSE) -p 1 `go list ./...`
+	CGO_ENABLED=0 go test $(MAYBE_VERBOSE) -p 1 `go list ./...`
 
 ci-steps: prepare lint test
 
