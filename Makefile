@@ -1,6 +1,4 @@
 prepare:
-	go mod download
-	go mod tidy
 
 format:
 	gofmt -s -w .
